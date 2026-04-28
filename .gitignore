@@ -1,11 +1,10 @@
+node_modules/
+dist/assets/
 .DS_Store
-
-# Workspace-root lockfile (projects should manage their own lockfiles)
-/NodeJS_Games/package-lock.json
+*.log
+.env
+vite.config.js.timestamp-*.mjs
+.vite/
 
 # Local environments
 venv/
-**/venv/
-
-# Node
-node_modules/
