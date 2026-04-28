@@ -1,0 +1,11 @@
+.DS_Store
+
+# Workspace-root lockfile (projects should manage their own lockfiles)
+/NodeJS_Games/package-lock.json
+
+# Local environments
+venv/
+**/venv/
+
+# Node
+node_modules/
