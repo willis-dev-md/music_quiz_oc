@@ -1,6 +1,0 @@
-node_modules/
-dist/assets/
-.DS_Store
-*.log
-.env
-vite.config.js.timestamp-*.mjs
