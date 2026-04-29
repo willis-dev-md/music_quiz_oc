@@ -1,17 +1,90 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { normalizeSlot } from '../quiz/clueItem';
 
 const POINTS = [5, 3, 2, 1]; // points for guessing after 1, 2, 3 items revealed
+const TILE_COUNT = 6;
+const TILE_ICONS = ['🎧', '🎤', '🎸', '🥁', '🎹', '🎼'];
+
+function SeqSlotContent({ raw }) {
+  const slot = normalizeSlot(raw);
+  const [imgBroken, setImgBroken] = useState(false);
+
+  if (slot.kind === 'text') {
+    return <span className="seq-item-val">{slot.text || '?'}</span>;
+  }
+
+  const imgBlock =
+    slot.src && !imgBroken ? (
+      <div className="seq-media">
+        <img
+          className="seq-img"
+          src={slot.src}
+          alt={slot.alt || ''}
+          loading="lazy"
+          decoding="async"
+          onError={() => setImgBroken(true)}
+        />
+      </div>
+    ) : slot.src ? (
+      <span className="seq-img-fallback text-muted">Image unavailable</span>
+    ) : null;
+
+  if (slot.kind === 'image') {
+    return (
+      <div className="seq-slot-inner">
+        {imgBlock}
+        {slot.caption ? <span className="seq-caption">{slot.caption}</span> : null}
+      </div>
+    );
+  }
+
+  return (
+    <div className="seq-slot-inner">
+      {imgBlock}
+      {slot.text ? <span className="seq-item-val seq-item-val-text">{slot.text}</span> : null}
+      {slot.caption ? <span className="seq-caption">{slot.caption}</span> : null}
+    </div>
+  );
+}
+
+function SeqFourthAnswer({ question }) {
+  const q = question;
+  const [imgBroken, setImgBroken] = useState(false);
+  const src = q.answerImage;
+
+  return (
+    <div className="seq-fourth-inner">
+      {src && !imgBroken && (
+        <div className="seq-media">
+          <img
+            className="seq-img"
+            src={src}
+            alt={typeof q.answerAlt === 'string' ? q.answerAlt : String(q.answer)}
+            loading="lazy"
+            decoding="async"
+            onError={() => setImgBroken(true)}
+          />
+        </div>
+      )}
+      {src && imgBroken && (
+        <span className="seq-img-fallback text-muted">Image unavailable</span>
+      )}
+      <span className="seq-item-val">{q.answer}</span>
+    </div>
+  );
+}
 
 export default function SequencesRound({ data = [] }) {
   const [qIndex, setQIndex]       = useState(0);
+  const [mode, setMode]           = useState('pick'); // 'pick' | 'play'
   const [revealed, setRevealed]   = useState(1);   // 1–3 items shown (4th is the answer)
   const [showAnswer, setShowAnswer] = useState(false);
-  const [scores, setScores]       = useState(Array(data.length).fill(null));
+  const [scores, setScores]       = useState(Array(TILE_COUNT).fill(null));
 
   const q = data[qIndex];
-  const total = data.length;
-  const totalScore = scores.reduce((s, v) => s + (v ?? 0), 0);
+  const playableCount = Math.min(TILE_COUNT, data.length);
+  const totalScore = scores.slice(0, playableCount).reduce((s, v) => s + (v ?? 0), 0);
   const visibleItems = q ? q.items.slice(0, 3) : [];
 
   function nextItem() {
@@ -27,32 +100,38 @@ export default function SequencesRound({ data = [] }) {
     const next = [...scores];
     next[qIndex] = pts;
     setScores(next);
-    goNext();
+    setShowAnswer(false);
+    setRevealed(1);
+    setMode('pick');
   }
 
   function markWrong() {
     const next = [...scores];
     next[qIndex] = 0;
     setScores(next);
-    goNext();
-  }
-
-  function goNext() {
-    if (qIndex < total - 1) {
-      setQIndex(qIndex + 1);
-      setRevealed(1);
-      setShowAnswer(false);
-    }
+    setShowAnswer(false);
+    setRevealed(1);
+    setMode('pick');
   }
 
   function restart() {
     setQIndex(0);
+    setMode('pick');
     setRevealed(1);
     setShowAnswer(false);
-    setScores(Array(data.length).fill(null));
+    setScores(Array(TILE_COUNT).fill(null));
   }
 
-  const allDone = scores.every((s) => s !== null);
+  const allDone = scores.slice(0, playableCount).every((s) => s !== null);
+
+  function pickTile(i) {
+    if (i >= playableCount) return;
+    if (scores[i] !== null) return;
+    setQIndex(i);
+    setRevealed(1);
+    setShowAnswer(false);
+    setMode('play');
+  }
 
   if (!data.length) {
     return (
@@ -73,19 +152,13 @@ export default function SequencesRound({ data = [] }) {
       <div className="round-header">
         <Link to="/" className="btn-back">← Back</Link>
         <h1 className="round-title">▶️ Sequences</h1>
-        <span className="round-subtitle">Question {qIndex + 1} / {total}</span>
+        <span className="round-subtitle">
+          {mode === 'pick'
+            ? 'Pick a tile'
+            : `${TILE_ICONS[qIndex] || '⬤'} Tile ${qIndex + 1} / ${playableCount}`
+          }
+        </span>
         <span className="score-badge">Score: {totalScore}</span>
-      </div>
-
-      <div className="progress-dots mb-3">
-        {data.map((_, i) => (
-          <div
-            key={i}
-            className={`progress-dot ${
-              scores[i] !== null ? 'done' : i === qIndex ? 'active' : ''
-            }`}
-          />
-        ))}
       </div>
 
       <div className="round-body">
@@ -94,10 +167,10 @@ export default function SequencesRound({ data = [] }) {
             <h2 className="seq-final-title">Round Complete!</h2>
             <div className="seq-final-score">{totalScore}</div>
             <p style={{ color: 'var(--muted)', marginBottom: '1.5rem' }}>
-              points from {total} sequences
+              points from {playableCount} tiles
             </p>
             <div className="seq-breakdown">
-              {data.map((d, i) => (
+              {data.slice(0, playableCount).map((d, i) => (
                 <div key={i} className={`seq-fb-row ${scores[i] > 0 ? 'correct' : 'wrong'}`}>
                   <span className="fb-num">Q{i + 1}</span>
                   <span className="seq-fb-ans">{d.answer}</span>
@@ -106,6 +179,32 @@ export default function SequencesRound({ data = [] }) {
               ))}
             </div>
             <button className="btn btn-primary mt-3" onClick={restart}>Play Again</button>
+          </div>
+        ) : mode === 'pick' ? (
+          <div className="seq-pick">
+            <div className="pick-grid">
+              {Array.from({ length: TILE_COUNT }).map((_, i) => {
+                const playable = i < playableCount;
+                const done = scores[i] !== null;
+                return (
+                  <button
+                    key={i}
+                    className={`pick-tile ${done ? 'done' : ''}`}
+                    onClick={() => pickTile(i)}
+                    disabled={!playable || done}
+                  >
+                    <span className="pick-num">
+                      <span className="pick-icon" aria-hidden="true">{TILE_ICONS[i] || '⬤'}</span>
+                      Tile {i + 1}
+                    </span>
+                    <span className="pick-status">
+                      {!playable ? 'Not set' : done ? 'Used' : 'Play'}
+                    </span>
+                    {done ? <span className="pick-used-mark" aria-hidden="true">✓</span> : null}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         ) : (
           <div className="seq-layout">
@@ -116,7 +215,7 @@ export default function SequencesRound({ data = [] }) {
               {visibleItems.map((item, i) => (
                 <div key={i} className={`seq-item ${i < revealed ? 'revealed animate-fade' : 'hidden'}`}>
                   <span className="seq-item-num">{i + 1}</span>
-                  <span className="seq-item-val">{i < revealed ? item : '?'}</span>
+                  {i < revealed ? <SeqSlotContent raw={item} /> : <span className="seq-item-val">?</span>}
                 </div>
               ))}
 
@@ -124,9 +223,7 @@ export default function SequencesRound({ data = [] }) {
               <div className="seq-arrow">→</div>
               <div className={`seq-item fourth ${showAnswer ? 'answered animate-pop' : 'pending'}`}>
                 <span className="seq-item-num">4</span>
-                <span className="seq-item-val">
-                  {showAnswer ? q.answer : '?'}
-                </span>
+                {showAnswer ? <SeqFourthAnswer question={q} /> : <span className="seq-item-val">?</span>}
               </div>
             </div>
 
@@ -178,6 +275,57 @@ export default function SequencesRound({ data = [] }) {
       </div>
 
       <style>{`
+        /* Pick screen (shared look with Connections) */
+        .seq-pick { width: 100%; max-width: 720px; }
+        .pick-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1rem;
+          width: 100%;
+          margin-bottom: 1rem;
+        }
+        .pick-tile {
+          background: var(--surface);
+          border: 2px solid var(--border);
+          border-radius: 14px;
+          padding: 1.25rem 1rem;
+          cursor: pointer;
+          font-family: inherit;
+          text-align: left;
+          display: flex;
+          flex-direction: column;
+          gap: .35rem;
+          transition: border-color .2s, background .2s, transform .1s;
+          min-height: 92px;
+          position: relative;
+        }
+        .pick-tile:hover:not(:disabled) { border-color: #3b82f6; background: rgba(59, 130, 246, .06); transform: translateY(-1px); }
+        .pick-tile:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+        .pick-tile.done {
+          border-color: rgba(22, 163, 74, .35);
+          background: var(--success-tint);
+        }
+        .pick-num {
+          font-size: .75rem;
+          font-weight: 900;
+          letter-spacing: .1em;
+          text-transform: uppercase;
+          color: var(--info);
+          display: inline-flex;
+          align-items: center;
+          gap: .5rem;
+        }
+        .pick-icon { font-size: 1.05rem; line-height: 1; }
+        .pick-status { font-size: 1.1rem; font-weight: 800; color: var(--text); }
+        .pick-used-mark {
+          position: absolute;
+          top: .6rem;
+          right: .75rem;
+          font-weight: 900;
+          font-size: 1rem;
+          color: var(--success);
+        }
+
         .seq-layout {
           display: flex;
           flex-direction: column;
@@ -215,20 +363,62 @@ export default function SequencesRound({ data = [] }) {
           gap: .4rem;
           transition: border-color .2s, background .2s;
         }
-        .seq-item.revealed { border-color: #3b82f6; background: #0f1a30; }
+        .seq-item.revealed { border-color: var(--info); background: var(--info-tint); }
         .seq-item.hidden   { opacity: .3; }
-        .seq-item.fourth.pending { border-style: dashed; border-color: var(--amber); opacity: .6; }
-        .seq-item.fourth.answered { border-color: var(--green); background: #0d2d1a; }
+        .seq-item.fourth.pending { border-style: dashed; border-color: var(--warning); opacity: .6; }
+        .seq-item.fourth.answered { border-color: var(--success); background: var(--success-tint); }
         .seq-item-num {
           font-size: .65rem;
           font-weight: 700;
           letter-spacing: .12em;
           text-transform: uppercase;
-          color: #3b82f6;
+          color: var(--info);
         }
-        .seq-item.fourth .seq-item-num { color: var(--amber); }
-        .seq-item.fourth.answered .seq-item-num { color: var(--green); }
+        .seq-item.fourth .seq-item-num { color: var(--warning); }
+        .seq-item.fourth.answered .seq-item-num { color: var(--success); }
         .seq-item-val { font-size: 1.15rem; font-weight: 700; }
+        .seq-slot-inner {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: .4rem;
+          width: 100%;
+          min-height: 2.5rem;
+          justify-content: center;
+        }
+        .seq-media {
+          width: 100%;
+          max-height: 120px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          border-radius: 10px;
+          background: var(--surface-2, #f3f4f6);
+        }
+        .seq-img {
+          max-width: 100%;
+          max-height: 120px;
+          width: auto;
+          height: auto;
+          object-fit: contain;
+          display: block;
+        }
+        .seq-img-fallback { font-size: .8rem; font-weight: 600; }
+        .seq-item-val-text { font-size: 1rem !important; }
+        .seq-caption {
+          font-size: .7rem;
+          font-weight: 600;
+          color: var(--muted);
+          line-height: 1.25;
+        }
+        .seq-fourth-inner {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: .45rem;
+          width: 100%;
+        }
         .seq-arrow {
           font-size: 2rem;
           color: var(--muted);

@@ -5,6 +5,7 @@
 :root {
   --bg:       #f6f7fb;
   --surface:  #ffffff;
+  --surface-2:#f3f4f6;
   --border:   #d8dbe6;
   --text:     #111827;
   --muted:    #6b7280;
@@ -14,6 +15,23 @@
   --amber-d:  #d97706;
   --green:    #22c55e;
   --red:      #ef4444;
+
+  /* Semantic tokens */
+  --shadow-sm: 0 1px 2px rgba(17, 24, 39, .06);
+  --shadow-md: 0 10px 30px rgba(17, 24, 39, .10);
+  --ring: 0 0 0 4px rgba(139, 92, 246, .15);
+
+  --primary: var(--purple);
+  --primary-tint: rgba(139, 92, 246, .08);
+  --info: #3b82f6;
+  --info-tint: rgba(59, 130, 246, .08);
+
+  --success: #16a34a;
+  --success-tint: rgba(22, 163, 74, .10);
+  --danger: #ef4444;
+  --danger-tint: rgba(239, 68, 68, .10);
+  --warning: #f59e0b;
+  --warning-tint: rgba(245, 158, 11, .12);
 
   /* Connecting Wall group colours */
   --wall-yellow: #ca8a04;
@@ -122,7 +140,7 @@ html, body, #root {
   transition: color .15s, border-color .15s;
   text-decoration: none;
 }
-.btn-back:hover { color: var(--text); border-color: var(--purple); }
+.btn-back:hover { color: var(--text); border-color: var(--primary); }
 
 /* ── Generic buttons ───────────────────────────────────── */
 .btn {
@@ -142,7 +160,7 @@ html, body, #root {
 .btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 
 .btn-primary {
-  background: var(--purple);
+  background: var(--primary);
   color: #fff;
   padding: .8rem 1.8rem;
   font-size: 1rem;
@@ -156,7 +174,7 @@ html, body, #root {
   padding: .8rem 1.8rem;
   font-size: 1rem;
 }
-.btn-secondary:hover:not(:disabled) { border-color: var(--purple); }
+.btn-secondary:hover:not(:disabled) { border-color: var(--primary); box-shadow: var(--shadow-sm); }
 
 .btn-amber {
   background: var(--amber);
@@ -211,7 +229,7 @@ html, body, #root {
   width: 100%;
   transition: border-color .2s;
 }
-.clue-card.revealed { border-color: var(--purple); }
+.clue-card.revealed { border-color: var(--primary); }
 .clue-card.answered { border-color: var(--green); }
 .clue-card .clue-text {
   font-size: 2rem;
@@ -229,8 +247,8 @@ html, body, #root {
 /* ── Answer reveal ─────────────────────────────────────── */
 .answer-box {
   margin-top: 1.5rem;
-  background: #0d2d1a;
-  border: 2px solid var(--green);
+  background: var(--success-tint);
+  border: 2px solid rgba(22, 163, 74, .35);
   border-radius: 12px;
   padding: 1rem 1.5rem;
   text-align: center;
@@ -241,13 +259,13 @@ html, body, #root {
   font-weight: 700;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--green);
+  color: var(--success);
   margin-bottom: .35rem;
 }
 .answer-box .answer-text {
   font-size: 1.6rem;
   font-weight: 900;
-  color: #fff;
+  color: var(--text);
 }
 .answer-box .answer-sub {
   font-size: .9rem;

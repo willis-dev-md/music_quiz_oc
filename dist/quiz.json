@@ -2,26 +2,56 @@
   "connections": [
     {
       "id": 1,
-      "clues": ["Clue One", "Clue Two", "Clue Three", "Clue Four"],
+      "clues": [
+        "Blue One",
+        {
+          "image": "/images/connections/example-clue.svg",
+          "alt": "Example picture clue",
+          "caption": "Optional caption"
+        },
+        "Clue Three",
+        "Clue Four"
+      ],
       "connection": "They all share this connection"
     },
     {
       "id": 2,
-      "clues": ["Clue One", "Clue Two", "Clue Three", "Clue Four"],
-      "connection": "They all share this connection"
+      "clues": [{ 
+        "image": "/images/connections/demon.png", 
+        "alt": "Demon"
+      },
+       {
+        "image": "/images/connections/starchild.png", 
+        "alt": "StarChild"
+       }, 
+        {
+        "image": "/images/connections/spaceman.png", 
+        "alt": "Spaceman" 
+      }, {
+        "image": "/images/connections/catman.png", 
+        "alt": "Catman"
+      
+      }],
+      "connection": "Each character of the band Kiss"
     },
     {
       "id": 3,
-      "clues": ["Clue One", "Clue Two", "Clue Three", "Clue Four"],
-      "connection": "They all share this connection"
+      "clues": ["CCS", "Vince Clarke", "Phil Lynott",
+      "Paul Hardcastle"],
+      "connection": "Theme tunes of Top Of The Pops"
     },
     {
       "id": 4,
-      "clues": ["Clue One", "Clue Two", "Clue Three", "Clue Four"],
-      "connection": "They all share this connection"
+      "clues": ["A-ha", "Lulu", "Garbage", "Duran Duran"],
+      "connection": "James Bond theme song artists"
     },
     {
       "id": 5,
+      "clues": ["Clue One", "Clue Two", "Clue Three", "Clue Four"],
+      "connection": "They all share this connection"
+    }, 
+    {
+      "id": 6,
       "clues": ["Clue One", "Clue Two", "Clue Three", "Clue Four"],
       "connection": "They all share this connection"
     }
@@ -29,30 +59,44 @@
   "sequences": [
     {
       "id": 1,
-      "items": ["First", "Second", "Third", "???"],
-      "answer": "Fourth",
-      "explanation": "Explanation of the sequence pattern"
+      "items": [
+        "Ringo",
+        "John",
+        "Paul",
+        "???"
+      ],
+      "answer": "George",
+      "explanation": "The Beatles in age order, eldest to youngest"
     },
     {
       "id": 2,
-      "items": ["First", "Second", "Third", "???"],
-      "answer": "Fourth",
-      "explanation": "Explanation of the sequence pattern"
+      "items": ["LB-2020", "MC-2010", "BTB-2000", "???"],
+      "answer": "CR-1990",
+      "explanation": "Christmas number ones at the start of the Decade"
     },
     {
       "id": 3,
-      "items": ["First", "Second", "Third", "???"],
-      "answer": "Fourth",
-      "explanation": "Explanation of the sequence pattern"
+      "items": ["Boy",
+      "October",
+      "War",  
+      "???"],
+      "answer": "The Unforgettable Fire",
+      "explanation": "U2 Album release order"
     },
     {
       "id": 4,
+      "items": ["30", "25", "21", "???"],
+      "answer": "19",
+      "explanation": "Adele albums latest to oldest"
+    },
+    {
+      "id": 5,
       "items": ["First", "Second", "Third", "???"],
       "answer": "Fourth",
       "explanation": "Explanation of the sequence pattern"
     },
     {
-      "id": 5,
+      "id": 6,
       "items": ["First", "Second", "Third", "???"],
       "answer": "Fourth",
       "explanation": "Explanation of the sequence pattern"
@@ -116,8 +160,8 @@
     {
       "category": "British Bands",
       "items": [
-        "THE KINKS",
-        "GAYE BIKERS ON ACID",
+        "Joy Division",
+        "Depeche Mode",
         "JESUS JONES",
         "MANFRED MANN"
       ]
@@ -126,27 +170,27 @@
       "category": "Lead Singers and their Bands",
       "items": [
         "JON BON JOVI AND BON JOVI",
-        "ALEX ROSE AND GUNS AND ROSES",
-        "MICK JAGGER AND THE ROLLING STONES",
-        "PAUL MCCARTNEY AND WINGS"
+        "AXEL ROSE AND GUNS AND ROSES",
+        "Ian brown and the Stone Roses",
+        "george michael and wham"
       ]
     },
     {
       "category": "Albums and their Artists",
       "items": [
         "MOON SHAPED POOL AND RADIOHEAD",
-        "BOOKENDS AND SIMON AND GARFUNKEL",
+        "Bridge Over Troubled Water AND SIMON AND GARFUNKEL",
         "SEVENTH SON OF A SEVENTH SON AND IRON MAIDEN",
         "STANDING ON THE SHOULDERS OF GIANTS AND OASIS"
       ]
-    },
+    }, 
     {
       "category": "Artists and their debut singles",
       "items": [
-      “Duran Duran and Planet Earth”,
-“Bauhaus and Bela Lugosis Dead”,
-“Booker T and the MGs and Green Onions”,
-“The Go-Gos and Our Lips Are Sealed”
+      "Duran Duran and Planet Earth",
+      "Bauhaus and Bela Lugosis Dead",
+      "Booker T and the MGs and Green Onions",
+      "The GoGos and Our Lips Are Sealed"
       ]
     }
   ]

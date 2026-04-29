@@ -209,7 +209,7 @@ export default function MissingVowels({ data = [] }) {
           align-items: center;
           gap: 2rem;
           width: 100%;
-          max-width: 640px;
+          max-width: 920px;
         }
         .mv-category-bar {
           background: var(--surface);
@@ -225,7 +225,7 @@ export default function MissingVowels({ data = [] }) {
           font-weight: 700;
           letter-spacing: .12em;
           text-transform: uppercase;
-          color: var(--purple);
+          color: var(--primary);
           margin-bottom: .2rem;
         }
         .mv-cat-title {
@@ -247,7 +247,7 @@ export default function MissingVowels({ data = [] }) {
           font-size: clamp(1.25rem, 3.2vw, 2.4rem);
           font-weight: 900;
           letter-spacing: .15em;
-          color: var(--amber);
+          color: var(--warning);
           word-break: break-all;
         }
         .mv-controls {
@@ -269,7 +269,7 @@ export default function MissingVowels({ data = [] }) {
           font-weight: 900;
           letter-spacing: .1em;
           text-transform: uppercase;
-          color: var(--purple);
+          color: var(--primary);
           margin-bottom: .5rem;
         }
         .mv-result-row {
@@ -283,9 +283,9 @@ export default function MissingVowels({ data = [] }) {
           font-size: .9rem;
           margin-bottom: .35rem;
         }
-        .mv-result-row.correct { border-color: #15803d; }
-        .mv-result-row.wrong   { border-color: #7f1d1d; opacity: .7; }
-        .mv-encoded { font-weight: 700; color: var(--amber); min-width: 120px; }
+        .mv-result-row.correct { border-color: rgba(22, 163, 74, .35); background: var(--success-tint); }
+        .mv-result-row.wrong   { border-color: rgba(239, 68, 68, .35); background: var(--danger-tint); opacity: .85; }
+        .mv-encoded { font-weight: 700; color: var(--warning); min-width: 120px; }
         .mv-arrow   { color: var(--muted); }
         .mv-answer  { flex: 1; font-weight: 600; }
         .mv-tick    { font-weight: 900; font-size: 1rem; }

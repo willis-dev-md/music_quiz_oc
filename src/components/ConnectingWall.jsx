@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 // Colour config matches Only Connect convention: yellow=easiest, purple=hardest
+// Uses shared CSS variables so it fits the site's light theme.
 const COLOR_CONFIG = {
-  yellow: { bg: '#854d0e', bgSolved: '#ca8a04', text: '#fef9c3', border: '#ca8a04' },
-  green:  { bg: '#14532d', bgSolved: '#16a34a', text: '#dcfce7', border: '#16a34a' },
-  blue:   { bg: '#1e3a8a', bgSolved: '#2563eb', text: '#dbeafe', border: '#2563eb' },
-  purple: { bg: '#581c87', bgSolved: '#9333ea', text: '#f3e8ff', border: '#9333ea' },
+  yellow: { bg: 'var(--wall-yellow-light)', bgSolved: 'var(--wall-yellow-light)', text: 'var(--text)', border: 'var(--wall-yellow)' },
+  green:  { bg: 'var(--wall-green-light)',  bgSolved: 'var(--wall-green-light)',  text: 'var(--text)', border: 'var(--wall-green)' },
+  blue:   { bg: 'var(--wall-blue-light)',   bgSolved: 'var(--wall-blue-light)',   text: 'var(--text)', border: 'var(--wall-blue)' },
+  purple: { bg: 'var(--wall-purple-light)', bgSolved: 'var(--wall-purple-light)', text: 'var(--text)', border: 'var(--wall-purple)' },
 };
 
 function shuffle(arr) {
@@ -277,9 +278,9 @@ export default function ConnectingWall({ data }) {
           margin-bottom: .5rem;
           align-self: center;
         }
-        .flash-correct  { background: #15803d; color: #dcfce7; }
-        .flash-wrong    { background: #991b1b; color: #fee2e2; }
-        .flash-one-away { background: #92400e; color: #fef3c7; }
+        .flash-correct  { background: var(--success-tint); color: var(--success); border: 1px solid rgba(22, 163, 74, .35); }
+        .flash-wrong    { background: var(--danger-tint); color: var(--danger); border: 1px solid rgba(239, 68, 68, .35); }
+        .flash-one-away { background: var(--warning-tint); color: var(--warning); border: 1px solid rgba(245, 158, 11, .35); }
 
         .wall-selector {
           display: flex;
@@ -289,9 +290,9 @@ export default function ConnectingWall({ data }) {
           flex-wrap: wrap;
         }
         .wall-selector .btn.active {
-          border-color: var(--purple);
+          border-color: var(--primary);
           color: var(--text);
-          background: rgba(139, 92, 246, .08);
+          background: var(--primary-tint);
         }
 
         .wall-container {
@@ -321,7 +322,7 @@ export default function ConnectingWall({ data }) {
         }
         .solved-tiles { display: flex; gap: .5rem; flex-wrap: wrap; flex: 1; }
         .solved-tile {
-          background: rgba(0,0,0,.25);
+          background: rgba(255,255,255,.55);
           border-radius: 6px;
           padding: .25rem .6rem;
           font-size: .9rem;
@@ -360,7 +361,7 @@ export default function ConnectingWall({ data }) {
           align-items: center;
           justify-content: center;
         }
-        .wall-tile:hover { background: rgba(139, 92, 246, .06); border-color: var(--purple); }
+        .wall-tile:hover { background: var(--primary-tint); border-color: var(--primary); }
         .wall-tile.selected {
           background: rgba(109, 40, 217, .14);
           border-color: var(--purple);

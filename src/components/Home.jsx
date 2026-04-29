@@ -89,10 +89,13 @@ export default function Home() {
         }
         .home-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+          grid-template-columns: repeat(2, minmax(260px, 1fr));
           gap: 1.5rem;
           width: 100%;
-          max-width: 900px;
+          max-width: 820px;
+        }
+        @media (max-width: 640px) {
+          .home-grid { grid-template-columns: 1fr; }
         }
         .round-card {
           background: var(--surface);
