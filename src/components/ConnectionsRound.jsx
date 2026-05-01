@@ -68,6 +68,10 @@ export default function ConnectionsRound({ data = [] }) {
     setShowAnswer(true);
   }
 
+  function revealAllClues() {
+    setRevealed(4);
+  }
+
   function markCorrect() {
     const pts = POINTS[revealed - 1];
     const next = [...scores];
@@ -208,6 +212,13 @@ export default function ConnectionsRound({ data = [] }) {
               <div className="answer-box animate-fade">
                 <div className="answer-label">The Connection</div>
                 <div className="answer-text">{q.connection}</div>
+                {revealed < 4 && (
+                  <div className="flex flex-center mt-2">
+                    <button className="btn btn-secondary btn-sm" onClick={revealAllClues}>
+                      Reveal remaining clues
+                    </button>
+                  </div>
+                )}
                 <div className="flex flex-center flex-gap-1 mt-2">
                   <button className="btn btn-secondary btn-sm" style={{ borderColor: '#ef4444', color: '#ef4444' }} onClick={markWrong}>
                     ✗ Wrong

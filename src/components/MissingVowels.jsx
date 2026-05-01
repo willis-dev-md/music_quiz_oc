@@ -247,7 +247,7 @@ export default function MissingVowels({ data = [] }) {
           font-size: clamp(1.25rem, 3.2vw, 2.4rem);
           font-weight: 900;
           letter-spacing: .15em;
-          color: var(--warning);
+          color: var(--text);
           word-break: break-all;
         }
         .mv-controls {

@@ -8,3 +8,5 @@ vite.config.js.timestamp-*.mjs
 
 # Local environments
 venv/
+quizideas.txt
+quizTemplates/

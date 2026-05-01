@@ -22,9 +22,10 @@ function shuffle(arr) {
 export default function ConnectingWall({ data }) {
   const wallKeys = data?.walls ? Object.keys(data.walls) : [];
   const defaultWallKey = wallKeys.includes('A') ? 'A' : wallKeys[0] || 'A';
-  const [wallKey, setWallKey] = useState(defaultWallKey);
+  const [wallKey, setWallKey] = useState(() => (wallKeys.length ? null : defaultWallKey));
 
-  const wallData = data?.walls?.[wallKey] || (data?.groups ? data : null);
+  const wallData = wallKey ? data?.walls?.[wallKey] : null;
+  const singleWallData = data?.groups ? data : null;
 
   const [tiles, setTiles]           = useState([]);
   const [selected, setSelected]     = useState([]);
@@ -34,11 +35,14 @@ export default function ConnectingWall({ data }) {
   const [flash, setFlash]           = useState(null); // 'correct' | 'wrong' | 'one-away'
   const [gameOver, setGameOver]     = useState(false);
   const [won, setWon]               = useState(false);
+  const [revealedConnections, setRevealedConnections] = useState(() => new Set());
+  const [bonusPoints, setBonusPoints] = useState(0);
 
   // Build a flat shuffled tile list on mount / data change
   useEffect(() => {
-    if (!wallData?.groups) return;
-    const allTiles = wallData.groups.flatMap((g) =>
+    const active = wallKeys.length ? wallData : singleWallData;
+    if (!active?.groups) return;
+    const allTiles = active.groups.flatMap((g) =>
       g.tiles.map((t) => ({ text: t, group: g.name, color: g.color }))
     );
     setTiles(shuffle(allTiles));
@@ -47,7 +51,9 @@ export default function ConnectingWall({ data }) {
     setLives(4);
     setGameOver(false);
     setWon(false);
-  }, [wallData]);
+    setRevealedConnections(new Set());
+    setBonusPoints(0);
+  }, [wallData, singleWallData, wallKeys.length]);
 
   function toggleTile(tile) {
     if (gameOver) return;
@@ -69,14 +75,15 @@ export default function ConnectingWall({ data }) {
 
     if (allSameGroup) {
       // Correct!
-      const groupData = wallData.groups.find((g) => g.name === groupName);
+      const active = wallKeys.length ? wallData : singleWallData;
+      const groupData = active.groups.find((g) => g.name === groupName);
       const newSolved = [...solvedGroups, groupData];
       setSolvedGroups(newSolved);
       setSelected([]);
       setFlash('correct');
       setTimeout(() => setFlash(null), 900);
 
-      if (newSolved.length === wallData.groups.length) {
+      if (newSolved.length === active.groups.length) {
         setWon(true);
         setGameOver(true);
       }
@@ -102,8 +109,9 @@ export default function ConnectingWall({ data }) {
   }
 
   function resetGame() {
-    if (!wallData?.groups) return;
-    const allTiles = wallData.groups.flatMap((g) =>
+    const active = wallKeys.length ? wallData : singleWallData;
+    if (!active?.groups) return;
+    const allTiles = active.groups.flatMap((g) =>
       g.tiles.map((t) => ({ text: t, group: g.name, color: g.color }))
     );
     setTiles(shuffle(allTiles));
@@ -112,9 +120,82 @@ export default function ConnectingWall({ data }) {
     setLives(4);
     setGameOver(false);
     setWon(false);
+    setRevealedConnections(new Set());
+    setBonusPoints(0);
   }
 
-  if (!wallData?.groups) {
+  const active = wallKeys.length ? wallData : singleWallData;
+  const allGroupsFound = solvedGroups.length === active?.groups?.length;
+
+  function getGroupConnectionText(g) {
+    return g?.connection || g?.name || '';
+  }
+
+  function revealGroupConnection(g) {
+    if (!allGroupsFound) return;
+    const key = g?.name;
+    if (!key) return;
+
+    setRevealedConnections((prev) => {
+      if (prev.has(key)) return prev;
+      const next = new Set(prev);
+      next.add(key);
+      return next;
+    });
+
+    setBonusPoints((p) => {
+      // Only award once per group
+      return revealedConnections.has(key) ? p : p + 1;
+    });
+  }
+
+  if (wallKeys.length && !wallKey) {
+    return (
+      <div className="round-page">
+        <div className="round-header">
+          <Link to="/" className="btn-back">← Back</Link>
+          <h1 className="round-title">🧱 Connecting Wall</h1>
+          <span className="round-subtitle">Choose a wall to play</span>
+        </div>
+
+        <div className="round-body">
+          <div className="wall-container">
+            <div className="wall-selector">
+              {Object.keys(data.walls).sort().map((k) => (
+                <button
+                  key={k}
+                  className="btn btn-secondary"
+                  onClick={() => setWallKey(k)}
+                  title={data.walls[k]?.prompt || `Wall ${k}`}
+                >
+                  Wall {k}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <style>{`
+          .wall-container {
+            display: flex;
+            flex-direction: column;
+            gap: .75rem;
+            width: 100%;
+            max-width: 680px;
+          }
+          .wall-selector {
+            display: flex;
+            justify-content: center;
+            gap: .75rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+          }
+        `}</style>
+      </div>
+    );
+  }
+
+  if (!active?.groups) {
     return (
       <div className="round-page">
         <div className="round-header">
@@ -138,7 +219,11 @@ export default function ConnectingWall({ data }) {
       <div className="round-header">
         <Link to="/" className="btn-back">← Back</Link>
         <h1 className="round-title">🧱 Connecting Wall</h1>
-        <span className="round-subtitle">{wallData?.prompt || 'Find four groups of four'}</span>
+        <span className="round-subtitle">
+          {wallData?.prompt || 'Find four groups of four'}
+          {allGroupsFound ? ` • Reveal connections for bonus` : ''}
+        </span>
+        <span className="score-badge">Bonus: +{bonusPoints}</span>
         {/* Lives */}
         <div className="lives-row">
           {Array.from({ length: 4 }).map((_, i) => (
@@ -178,18 +263,41 @@ export default function ConnectingWall({ data }) {
           {/* Solved groups at top */}
           {solvedGroups.map((g) => {
             const cfg = COLOR_CONFIG[g.color] || COLOR_CONFIG.purple;
+            const isRevealed = revealedConnections.has(g.name);
+            const connectionText = getGroupConnectionText(g);
             return (
               <div
                 key={g.name}
-                className="wall-solved-row animate-pop"
+                className={`wall-solved-row animate-pop ${allGroupsFound ? 'can-reveal' : ''}`}
                 style={{ background: cfg.bgSolved, borderColor: cfg.border }}
+                onClick={() => revealGroupConnection(g)}
+                role={allGroupsFound ? 'button' : undefined}
+                tabIndex={allGroupsFound ? 0 : undefined}
+                onKeyDown={(e) => {
+                  if (!allGroupsFound) return;
+                  if (e.key === 'Enter' || e.key === ' ') revealGroupConnection(g);
+                }}
               >
-                <span className="solved-name" style={{ color: cfg.text }}>{g.name}</span>
+                <span className="solved-name" style={{ color: cfg.text }}>
+                  {allGroupsFound
+                    ? (isRevealed ? connectionText : 'Click to reveal connection')
+                    : 'Solved group'}
+                </span>
                 <div className="solved-tiles">
                   {g.tiles.map((t) => (
                     <span key={t} className="solved-tile" style={{ color: cfg.text }}>{t}</span>
                   ))}
                 </div>
+                {allGroupsFound && (
+                  <button
+                    className="btn btn-secondary btn-sm reveal-conn-btn"
+                    onClick={(e) => { e.stopPropagation(); revealGroupConnection(g); }}
+                    disabled={isRevealed}
+                    title={isRevealed ? 'Connection revealed' : 'Reveal connection (+1 bonus)'}
+                  >
+                    {isRevealed ? 'Revealed' : 'Reveal (+1)'}
+                  </button>
+                )}
               </div>
             );
           })}
@@ -313,6 +421,9 @@ export default function ConnectingWall({ data }) {
           gap: 1rem;
           flex-wrap: wrap;
         }
+        .wall-solved-row.can-reveal { cursor: pointer; }
+        .wall-solved-row.can-reveal:focus { outline: none; box-shadow: var(--ring); }
+        .reveal-conn-btn { margin-left: auto; }
         .solved-name {
           font-size: .8rem;
           font-weight: 900;

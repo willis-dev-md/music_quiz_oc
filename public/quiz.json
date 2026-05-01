@@ -3,16 +3,12 @@
     {
       "id": 1,
       "clues": [
-        "Blue One",
-        {
-          "image": "/images/connections/example-clue.svg",
-          "alt": "Example picture clue",
-          "caption": "Optional caption"
-        },
-        "Clue Three",
-        "Clue Four"
+        "Magazine",
+        "Visage",
+        "Siouxie and the Banshees",
+        "Public Image Ltd"
       ],
-      "connection": "They all share this connection"
+      "connection": "John McGeoch bands"
     },
     {
       "id": 2,
@@ -47,13 +43,13 @@
     },
     {
       "id": 5,
-      "clues": ["Clue One", "Clue Two", "Clue Three", "Clue Four"],
-      "connection": "They all share this connection"
+      "clues": ["Brian Jones", "Janis Joplin", "Jim Morrison", "Amy Winehouse"],
+      "connection": "They all died at the age of 27"
     }, 
     {
       "id": 6,
-      "clues": ["Clue One", "Clue Two", "Clue Three", "Clue Four"],
-      "connection": "They all share this connection"
+      "clues": ["Bone", "Neck", "Seat", "Stung"],
+      "connection": "Names with a letter altered"
     }
   ],
   "sequences": [
@@ -70,8 +66,8 @@
     },
     {
       "id": 2,
-      "items": ["LB-2020", "MC-2010", "BTB-2000", "???"],
-      "answer": "CR-1990",
+      "items": ["Lad Baby 2020", "Matt Cardle 2010", "Bob The Builder 2000", "???"],
+      "answer": "Cliff Richard 1990",
       "explanation": "Christmas number ones at the start of the Decade"
     },
     {
@@ -91,9 +87,9 @@
     },
     {
       "id": 5,
-      "items": ["First", "Second", "Third", "???"],
-      "answer": "Fourth",
-      "explanation": "Explanation of the sequence pattern"
+      "items": ["2 4 6 8", "To Hell", "Stanley", "???"],
+      "answer": "Arnold or any smaller that a road title.",
+      "explanation": "Thoroughfares in music largest to smallest"
     },
     {
       "id": 6,
@@ -108,24 +104,24 @@
         "prompt": "Wall A",
         "groups": [
           {
-            "name": "Yellow Group Name",
+            "name": "Family Acts",
             "color": "yellow",
-            "tiles": ["Tile A", "Tile B", "Tile C", "Tile D"]
+            "tiles": ["Osmonds", "Orbital", "Jackson 5", "The Corrs"]
           },
           {
-            "name": "Green Group Name",
+            "name": "Roberts in Music",
             "color": "green",
-            "tiles": ["Tile E", "Tile F", "Tile G", "Tile H"]
+            "tiles": ["Smith", "Plant", "Miles", "Palmer"]
           },
           {
-            "name": "Blue Group Name",
+            "name": "Pluraled bands made one",
             "color": "blue",
-            "tiles": ["Tile I", "Tile J", "Tile K", "Tile L"]
+            "tiles": ["Pixie", "Pretender", "Foal", "Zombie"]
           },
           {
-            "name": "Purple Group Name",
+            "name": "Songs _______",
             "color": "purple",
-            "tiles": ["Tile M", "Tile N", "Tile O", "Tile P"]
+            "tiles": ["Of Innocence", "From the big chair", "In the Key Of Life", "For the Deaf"]
           }
         ]
       },
@@ -133,24 +129,24 @@
         "prompt": "Wall B",
         "groups": [
           {
-            "name": "Yellow Group Name (B)",
+            "name": "Brothers in Arms",
             "color": "yellow",
-            "tiles": ["Tile A1", "Tile B1", "Tile C1", "Tile D1"]
+            "tiles": ["Dire Straits", "The Darkness", "Bros", "Oasis"]
           },
           {
-            "name": "Green Group Name (B)",
+            "name": "Beatles Songs",
             "color": "green",
-            "tiles": ["Tile E1", "Tile F1", "Tile G1", "Tile H1"]
+            "tiles": ["Rain", "Taxman", "Girl", "Boys"]
           },
           {
-            "name": "Blue Group Name (B)",
+            "name": "Places in London",
             "color": "blue",
-            "tiles": ["Tile I1", "Tile J1", "Tile K1", "Tile L1"]
+            "tiles": ["Chelsea Dagger", "Baker Street", "Electric Avenue", "Mile End"]
           },
           {
-            "name": "Purple Group Name (B)",
+            "name": "____ Animals",
             "color": "purple",
-            "tiles": ["Tile M1", "Tile N1", "Tile O1", "Tile P1"]
+            "tiles": ["Black", "Love", "Wild", "Rock"]
           }
         ]
       }

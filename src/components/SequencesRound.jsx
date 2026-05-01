@@ -95,6 +95,10 @@ export default function SequencesRound({ data = [] }) {
     setShowAnswer(true);
   }
 
+  function revealAllItems() {
+    setRevealed(3);
+  }
+
   function markCorrect() {
     const pts = POINTS[revealed - 1];
     const next = [...scores];
@@ -238,6 +242,11 @@ export default function SequencesRound({ data = [] }) {
             {/* Mark correct / wrong after answer shown */}
             {showAnswer && (
               <div className="conn-controls animate-fade">
+                {revealed < 3 && (
+                  <button className="btn btn-secondary btn-sm" onClick={revealAllItems}>
+                    Reveal remaining items
+                  </button>
+                )}
                 <button
                   className="btn btn-secondary btn-sm"
                   style={{ borderColor: '#ef4444', color: '#ef4444' }}
