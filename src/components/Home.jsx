@@ -98,8 +98,8 @@ export default function Home() {
           .home-grid { grid-template-columns: 1fr; }
         }
         .round-card {
-          background: var(--surface);
-          border: 2px solid var(--border);
+          background: rgba(18, 24, 38, .70);
+          border: 1px solid rgba(255, 255, 255, .12);
           border-radius: 16px;
           padding: 2rem 1.5rem;
           text-align: left;
@@ -109,6 +109,8 @@ export default function Home() {
           transition: border-color .2s, transform .15s, box-shadow .2s;
           position: relative;
           overflow: hidden;
+          box-shadow: var(--shadow-md);
+          backdrop-filter: blur(10px);
         }
         .round-card::before {
           content: '';
@@ -122,7 +124,7 @@ export default function Home() {
         .round-card:hover {
           border-color: var(--accent);
           transform: translateY(-3px);
-          box-shadow: 0 10px 30px rgba(17, 24, 39, .12);
+          box-shadow: 0 22px 70px rgba(0, 0, 0, .55);
         }
         .round-card:hover::before { opacity: 1; }
         .rc-emoji { font-size: 2.5rem; display: block; margin-bottom: .75rem; }
