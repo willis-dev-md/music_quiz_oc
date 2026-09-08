@@ -5,7 +5,7 @@
       "clues": [
         "Magazine",
         "Visage",
-        "Siouxie and the Banshees",
+        "Siouxsie and the Banshees",
         "Public Image Ltd"
       ],
       "connection": "John McGeoch bands"
@@ -88,14 +88,14 @@
     {
       "id": 5,
       "items": ["2 4 6 8", "To Hell", "Stanley", "???"],
-      "answer": "Arnold or any smaller that a road title.",
+      "answer": "Arnold Layne, or any smaller thoroughfare in a song title",
       "explanation": "Thoroughfares in music largest to smallest"
     },
     {
       "id": 6,
-      "items": ["First", "Second", "Third", "???"],
-      "answer": "Fourth",
-      "explanation": "Explanation of the sequence pattern"
+      "items": ["U2", "Maroon 5", "Sum 41", "???"],
+      "answer": "Blink-182 (accept any band with a higher number, e.g. Haircut 100, Front 242)",
+      "explanation": "Bands with a number in their name, in ascending order: 2, 5, 41, 182"
     }
   ],
   "connectingWall": {
@@ -166,7 +166,7 @@
       "category": "Lead Singers and their Bands",
       "items": [
         "JON BON JOVI AND BON JOVI",
-        "AXEL ROSE AND GUNS AND ROSES",
+        "AXL ROSE AND GUNS N ROSES",
         "Ian brown and the Stone Roses",
         "george michael and wham"
       ]
