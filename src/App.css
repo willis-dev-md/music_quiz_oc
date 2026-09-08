@@ -43,6 +43,8 @@
   --wall-blue-light: #bfdbfe;
   --wall-purple: #7e22ce;
   --wall-purple-light: #e9d5ff;
+  /* Text on the pale wall backgrounds */
+  --wall-text: rgba(97, 16, 16, .92);
 }
 
 /* ── Base ──────────────────────────────────────────────── */

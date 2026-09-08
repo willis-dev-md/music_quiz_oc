@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 // Colour config matches Only Connect convention: yellow=easiest, purple=hardest
 // Uses shared CSS variables so it fits the site's light theme.
 const COLOR_CONFIG = {
-  yellow: { bg: 'var(--wall-yellow-light)', bgSolved: 'var(--wall-yellow-light)', text: 'var(--text)', border: 'var(--wall-yellow)' },
-  green:  { bg: 'var(--wall-green-light)',  bgSolved: 'var(--wall-green-light)',  text: 'var(--text)', border: 'var(--wall-green)' },
-  blue:   { bg: 'var(--wall-blue-light)',   bgSolved: 'var(--wall-blue-light)',   text: 'var(--text)', border: 'var(--wall-blue)' },
-  purple: { bg: 'var(--wall-purple-light)', bgSolved: 'var(--wall-purple-light)', text: 'var(--text)', border: 'var(--wall-purple)' },
+  yellow: { bg: 'var(--wall-yellow-light)', bgSolved: 'var(--wall-yellow-light)', text: 'var(--wall-text)', border: 'var(--wall-yellow)' },
+  green:  { bg: 'var(--wall-green-light)',  bgSolved: 'var(--wall-green-light)',  text: 'var(--wall-text)', border: 'var(--wall-green)' },
+  blue:   { bg: 'var(--wall-blue-light)',   bgSolved: 'var(--wall-blue-light)',   text: 'var(--wall-text)', border: 'var(--wall-blue)' },
+  purple: { bg: 'var(--wall-purple-light)', bgSolved: 'var(--wall-purple-light)', text: 'var(--wall-text)', border: 'var(--wall-purple)' },
 };
 
 function shuffle(arr) {
@@ -181,7 +181,7 @@ export default function ConnectingWall({ data }) {
             flex-direction: column;
             gap: .75rem;
             width: 100%;
-            max-width: 680px;
+            max-width: 1100px;
           }
           .wall-selector {
             display: flex;
@@ -408,7 +408,7 @@ export default function ConnectingWall({ data }) {
           flex-direction: column;
           gap: .75rem;
           width: 100%;
-          max-width: 680px;
+          max-width: 1100px;
         }
 
         /* Solved row */
@@ -423,20 +423,26 @@ export default function ConnectingWall({ data }) {
         }
         .wall-solved-row.can-reveal { cursor: pointer; }
         .wall-solved-row.can-reveal:focus { outline: none; box-shadow: var(--ring); }
-        .reveal-conn-btn { margin-left: auto; }
+        .reveal-conn-btn {
+          margin-left: auto;
+          color: var(--wall-text);
+          background: rgba(255, 255, 255, .55);
+          border-color: var(--wall-text);
+        }
+        .reveal-conn-btn:disabled { opacity: .55; }
         .solved-name {
-          font-size: .8rem;
+          font-size: 1rem;
           font-weight: 900;
           letter-spacing: .08em;
           text-transform: uppercase;
-          min-width: 120px;
+          min-width: 170px;
         }
         .solved-tiles { display: flex; gap: .5rem; flex-wrap: wrap; flex: 1; }
         .solved-tile {
           background: rgba(255,255,255,.55);
           border-radius: 6px;
-          padding: .25rem .6rem;
-          font-size: .9rem;
+          padding: .4rem .8rem;
+          font-size: 1.15rem;
           font-weight: 700;
         }
 
@@ -444,7 +450,7 @@ export default function ConnectingWall({ data }) {
         .wall-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: .6rem;
+          gap: .9rem;
         }
         .wall-grid.shake { animation: wallShake .35s ease; }
         @keyframes wallShake {
@@ -460,14 +466,14 @@ export default function ConnectingWall({ data }) {
           border-radius: 10px;
           color: var(--text);
           font-family: inherit;
-          font-size: clamp(.75rem, 1.5vw, 1rem);
+          font-size: clamp(1rem, 1.7vw, 1.6rem);
           font-weight: 700;
-          padding: 1rem .5rem;
+          padding: 1.25rem .75rem;
           cursor: pointer;
           text-align: center;
           transition: background .15s, border-color .15s, transform .1s;
           line-height: 1.3;
-          min-height: 70px;
+          min-height: 110px;
           display: flex;
           align-items: center;
           justify-content: center;
